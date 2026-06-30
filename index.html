@@ -1,0 +1,316 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Atomic Papers · II of IV — Orbitals</title>
+<style>
+  :root{
+    --space:#0C1016; --space-2:#141A22; --space-3:#1C242E;
+    --ink:#E6ECF3; --ink-soft:#8B98A8;
+    --cloud:#4FA8D8; --cloud-br:#6FC4EE; --cloud-deep:#2E6E96;
+    --core:#D67A33; --probe:#D7A52E;
+    --rule:#222B36; --rule-2:#313D4A;
+    --lit:#6FB87E; --bri:#D2A24B; --spec:#D2705F;
+  }
+  *{box-sizing:border-box}
+  html{-webkit-text-size-adjust:100%}
+  body{margin:0;background:var(--space);color:var(--ink);
+    font-family:"Iowan Old Style","Palatino Linotype",Palatino,"Book Antiqua",Georgia,serif;
+    font-size:18px;line-height:1.58;-webkit-font-smoothing:antialiased}
+  .mono{font-family:ui-monospace,"SF Mono",Menlo,Consolas,"Liberation Mono",monospace}
+  :focus-visible{outline:2px solid var(--cloud);outline-offset:3px}
+  .wrap{max-width:880px;margin:0 auto;padding:0 30px}
+
+  header.mast{padding:54px 0 30px;border-bottom:2px solid var(--cloud)}
+  .series{font-family:ui-monospace,Menlo,Consolas,monospace;font-size:12px;letter-spacing:.3em;text-transform:uppercase;color:var(--cloud);margin:0 0 22px;display:flex;justify-content:space-between;flex-wrap:wrap;gap:8px}
+  .series b{color:var(--ink-soft);font-weight:400}
+  h1{font-size:clamp(27px,4.6vw,42px);line-height:1.08;margin:0;font-weight:600;letter-spacing:.005em}
+  .abstract{max-width:62ch;margin:18px 0 0;font-size:18px}
+  .priorlink{font-family:ui-monospace,Menlo,Consolas,monospace;font-size:11.5px;color:var(--ink-soft);margin:14px 0 0}
+  .byline{font-family:ui-monospace,Menlo,Consolas,monospace;font-size:11.5px;letter-spacing:.06em;color:var(--ink-soft);margin:8px 0 0}
+
+  .sig{margin:30px 0 0;padding:20px 20px 14px;background:var(--space-2);border:1px solid var(--rule-2)}
+  .sig svg{display:block;width:100%;height:auto}
+  .sig .cap{font-family:ui-monospace,Menlo,Consolas,monospace;font-size:11px;letter-spacing:.04em;color:var(--ink-soft);margin:10px 2px 0;line-height:1.5}
+  .sig .cap b{color:var(--cloud);font-weight:600}
+  .sig .cap .z{color:var(--spec);font-weight:600}
+  .lab{font-family:ui-monospace,Menlo,Consolas,monospace;font-size:10px;fill:var(--ink-soft)}
+  .lab-cl{font-family:ui-monospace,Menlo,Consolas,monospace;font-size:11px;fill:var(--cloud);font-weight:700}
+  .lab-z{font-family:ui-monospace,Menlo,Consolas,monospace;font-size:10px;fill:var(--spec)}
+  .node{stroke:var(--spec);stroke-width:1.4;stroke-dasharray:4 3}
+
+  .legend{margin:26px 0 0;display:flex;flex-wrap:wrap;gap:10px 12px;align-items:center}
+  .legend .lt{font-family:ui-monospace,Menlo,Consolas,monospace;font-size:10.5px;letter-spacing:.16em;text-transform:uppercase;color:var(--ink-soft);margin-right:2px}
+  .schip{font-family:ui-monospace,Menlo,Consolas,monospace;font-size:10px;letter-spacing:.08em;text-transform:uppercase;padding:5px 10px;border:1px solid;background:transparent;cursor:pointer}
+  .schip[data-s="lit"]{color:var(--lit);border-color:var(--lit)}
+  .schip[data-s="bri"]{color:var(--bri);border-color:var(--bri)}
+  .schip[data-s="spec"]{color:var(--spec);border-color:var(--spec)}
+  .schip[aria-pressed="false"]{opacity:.4}
+  .legend .hint{font-family:ui-monospace,Menlo,Consolas,monospace;font-size:10px;color:var(--ink-soft)}
+
+  section{padding:34px 0;border-bottom:1px solid var(--rule)}
+  .snum{font-family:ui-monospace,Menlo,Consolas,monospace;font-size:12px;color:var(--cloud);letter-spacing:.18em}
+  h2{font-size:clamp(19px,3vw,25px);margin:4px 0 0;font-weight:600;letter-spacing:.01em}
+  h2 .kicker{font-family:ui-monospace,Menlo,Consolas,monospace;font-size:11px;letter-spacing:.16em;text-transform:uppercase;color:var(--ink-soft);margin-left:10px;font-weight:400}
+  section p{margin:14px 0 0;max-width:66ch}
+  .central{border-left:3px solid var(--cloud)}
+
+  .formal{margin:16px 0 0;padding:13px 16px;background:var(--space-3);border:1px solid var(--rule-2);font-family:ui-monospace,Menlo,Consolas,monospace;font-size:14.5px;line-height:1.7}
+  .formal .eq{font-size:16px;color:var(--ink)}
+  .formal .gl{color:var(--ink-soft);font-size:12.5px}
+  .restated{margin:13px 0 0;padding:11px 15px;background:var(--space-2);border-left:3px solid var(--rule-2);font-size:15.5px}
+  .restated b{font-family:ui-monospace,Menlo,Consolas,monospace;font-size:10px;letter-spacing:.12em;text-transform:uppercase;color:var(--ink-soft);font-weight:400;display:block;margin-bottom:4px}
+
+  .tags{margin:14px 0 0;display:flex;flex-wrap:wrap;gap:8px}
+  .tag{font-family:ui-monospace,Menlo,Consolas,monospace;font-size:10px;letter-spacing:.08em;text-transform:uppercase;padding:4px 9px;border:1px solid}
+  .tag.lit{color:var(--lit);border-color:var(--lit)}
+  .tag.bri{color:var(--bri);border-color:var(--bri)}
+  .tag.spec{color:var(--spec);border-color:var(--spec)}
+  .test{font-family:ui-monospace,Menlo,Consolas,monospace;font-size:12.5px;color:var(--ink-soft);margin:10px 0 0;padding-left:14px;border-left:2px solid var(--rule-2)}
+  .test b{color:var(--cloud);font-weight:600}
+  .dim{opacity:.22;transition:opacity .2s ease}
+
+  .fig{margin:30px 0 6px;padding:22px 18px 14px;background:var(--space-2);border:1px solid var(--rule-2)}
+  .fig svg{display:block;width:100%;height:auto}
+  .fig .figcap{font-family:ui-monospace,Menlo,Consolas,monospace;font-size:11px;color:var(--ink-soft);margin:12px 4px 0;line-height:1.55}
+  .axisline{stroke:var(--rule-2);stroke-width:1.4}
+  .levelline{stroke:var(--cloud-deep);stroke-width:1.6}
+  .orbbox{fill:none;stroke:var(--rule-2);stroke-width:1.2}
+  .spinup{stroke:var(--cloud);stroke-width:1.8;fill:none}
+  .pile{fill:var(--spec);opacity:.5}
+  .stack{fill:var(--cloud);opacity:.55}
+  .divider{stroke:var(--rule-2);stroke-width:1.2;stroke-dasharray:5 4}
+  .flab{font-family:ui-monospace,Menlo,Consolas,monospace;font-size:11px;fill:var(--ink)}
+  .flab-s{font-family:ui-monospace,Menlo,Consolas,monospace;font-size:10px;fill:var(--ink-soft)}
+  .flab-cl{font-family:ui-monospace,Menlo,Consolas,monospace;font-size:10px;fill:var(--cloud)}
+  .flab-r{font-family:ui-monospace,Menlo,Consolas,monospace;font-size:10px;fill:var(--spec)}
+
+  .closer{padding:34px 0 0;border-bottom:0}
+  .closer p{font-size:19px;max-width:64ch}
+  .closer .em{font-style:italic}
+  .roadmap{margin:18px 0 0;display:grid;grid-template-columns:1fr 1fr 1fr;gap:12px}
+  .roadmap .rm{padding:12px 14px;background:var(--space-2);border:1px solid var(--rule-2);border-top:3px solid var(--cloud)}
+  .roadmap .rm.done{border-top-color:var(--ink-soft);opacity:.7}
+  .roadmap .rm .rk{font-family:ui-monospace,Menlo,Consolas,monospace;font-size:10px;letter-spacing:.12em;text-transform:uppercase;color:var(--cloud);margin:0 0 5px}
+  .roadmap .rm.done .rk{color:var(--ink-soft)}
+  .roadmap .rm p{margin:0;font-size:13.5px;color:var(--ink-soft);max-width:none}
+
+  footer{padding:30px 0 80px;color:var(--ink-soft);font-size:13.5px;line-height:1.6}
+  footer p{margin:0 0 12px;max-width:72ch}
+  footer b{color:var(--ink);font-weight:600}
+
+  @media (max-width:640px){ .roadmap{grid-template-columns:1fr} }
+  @media (max-width:600px){ body{font-size:17px} .series{font-size:11px;letter-spacing:.2em} .formal{font-size:13.5px} }
+</style>
+</head>
+<body>
+
+<header class="mast">
+  <div class="wrap">
+    <p class="series"><span>Atomic Papers · II of IV</span><b>surface series · release</b></p>
+    <h1>Orbitals</h1>
+    <p class="abstract">The cloud of Paper I was left as a single haze. It is not. The probability density has structure — discrete shapes, organised by a handful of integers, with surfaces of exact zero built into it where the electron is never found. And it has that structure for one deep reason: no two electrons may share a state, so they are forced to stack rather than collapse together. Exclusion is what turns a haze into shells, shells into the periodic table, and the periodic table into all of chemistry. The behavioural surface is structured because distinct things are made to stay distinct.</p>
+    <p class="priorlink mono">↳ continues Atomic Papers · I — the structure inside the behavioural surface</p>
+    <p class="byline mono">Bridge-Burners LLC · Fiddler · the shape of the cloud · exclusion · anchor: AKASHA</p>
+
+    <div class="sig" aria-label="Three orbital shapes — a spherical s, a lobed p with a nodal plane, and a cloverleaf d — drawn as luminous cyan probability clouds">
+      <svg viewBox="0 0 760 210" role="img" aria-label="An s orbital as a glowing sphere, a p orbital as two lobes split by a dashed node plane, and a d orbital as four lobes">
+        <defs>
+          <radialGradient id="gS" cx="50%" cy="50%" r="50%">
+            <stop offset="0%" stop-color="#6FC4EE" stop-opacity="0.5"/>
+            <stop offset="60%" stop-color="#4FA8D8" stop-opacity="0.22"/>
+            <stop offset="100%" stop-color="#4FA8D8" stop-opacity="0"/>
+          </radialGradient>
+          <radialGradient id="gLobe" cx="50%" cy="50%" r="50%">
+            <stop offset="0%" stop-color="#6FC4EE" stop-opacity="0.55"/>
+            <stop offset="65%" stop-color="#4FA8D8" stop-opacity="0.2"/>
+            <stop offset="100%" stop-color="#4FA8D8" stop-opacity="0"/>
+          </radialGradient>
+        </defs>
+        <!-- s : sphere -->
+        <circle cx="120" cy="100" r="52" fill="url(#gS)"/>
+        <text class="lab-cl" x="120" y="178" text-anchor="middle">s · spherical</text>
+        <!-- p : two lobes + node plane -->
+        <ellipse cx="370" cy="66" rx="26" ry="34" fill="url(#gLobe)"/>
+        <ellipse cx="370" cy="134" rx="26" ry="34" fill="url(#gLobe)"/>
+        <line class="node" x1="312" y1="100" x2="428" y2="100"/>
+        <text class="lab-z" x="440" y="103">node · |ψ|²=0</text>
+        <text class="lab-cl" x="370" y="190" text-anchor="middle">p · lobed</text>
+        <!-- d : four lobes -->
+        <ellipse cx="610" cy="74" rx="20" ry="28" fill="url(#gLobe)"/>
+        <ellipse cx="610" cy="126" rx="20" ry="28" fill="url(#gLobe)"/>
+        <ellipse cx="584" cy="100" rx="28" ry="20" fill="url(#gLobe)"/>
+        <ellipse cx="636" cy="100" rx="28" ry="20" fill="url(#gLobe)"/>
+        <text class="lab-cl" x="610" y="190" text-anchor="middle">d · cloverleaf</text>
+      </svg>
+      <p class="cap">The haze has <b>shape</b>. Each orbital is a definite geometry of probability — a sphere, a pair of lobes, a cloverleaf — set by a few integers. And each has <span class="z">nodes</span>: surfaces where the density is exactly zero, places the electron is never found. The surface is not a blur. It is discrete states, each with a form and built-in gaps.</p>
+    </div>
+
+    <div class="legend" role="group" aria-label="Filter claims by status">
+      <span class="lt">Status</span>
+      <button class="schip" data-s="lit" aria-pressed="true">Literal</button>
+      <button class="schip" data-s="bri" aria-pressed="true">Bridge</button>
+      <button class="schip" data-s="spec" aria-pressed="true">Speculative</button>
+      <span class="hint">— literal: true of the substrate · bridge: structural analogy · speculative: named so it can be refused</span>
+    </div>
+  </div>
+</header>
+
+<section data-status="lit bri">
+  <div class="wrap">
+    <p class="snum">§0</p><h2>The haze has structure<span class="kicker">the cloud resolves into states</span></h2>
+    <p>Drawn at a distance the cloud is one soft density. Drawn closely it resolves into parts: distinct orbitals, each a separate state with its own shape, size, and energy, and the full cloud is their sum. The surface is not a continuous smear of behaviour but a set of discrete modes stacked together. This paper reads that structure — the integers that label it, the shapes and the zeros it carries, and the single principle that forces it to exist at all.</p>
+    <div class="tags">
+      <span class="tag lit">Literal — the electron cloud is composed of discrete orbital states</span>
+      <span class="tag bri">Bridge — the behavioural surface resolves into distinct modes</span>
+    </div>
+  </div>
+</section>
+
+<section class="central" data-status="lit bri">
+  <div class="wrap">
+    <p class="snum">§1 · central result</p><h2>The quantum numbers<span class="kicker">behaviour comes in discrete, labelled states</span></h2>
+    <p>Every state in the cloud is fixed by a small set of integers, and they are not continuous dials. One sets the level — the size and energy of the shell. One sets the shape — spherical, lobed, cloverleaf. One sets the orientation, and one the spin, two-valued, up or down. Between the allowed values there is nothing; an electron occupies one labelled state or another, never the gap between. So the behavioural surface is not a smear that can hold any value — it is organised into discrete, nameable modes along a few axes, and the whole cloud is a filling-in of those modes. To read the surface is to read which states are occupied, not to read a continuum.</p>
+    <div class="formal">
+      <span class="eq">state = ( n , ℓ , m , s )   ·   level, shape, orientation, spin</span><br>
+      <span class="gl">discrete labels, not continuous dials · the cloud is which states are filled</span>
+    </div>
+    <div class="restated"><b>Without the metaphor</b>
+      The behavioural surface is organised into discrete modes along a few axes, not a featureless continuum. A reading is a list of which modes are active, not a single blurred quantity. Structure on the surface is enumerable because it is quantised.</div>
+    <div class="tags">
+      <span class="tag lit">Literal — electron states are fixed by discrete quantum numbers</span>
+      <span class="tag bri">Bridge — behaviour organised into discrete, labelled modes</span>
+    </div>
+  </div>
+</section>
+
+<section data-status="lit bri">
+  <div class="wrap">
+    <p class="snum">§2</p><h2>Shape and node<span class="kicker">form, and built-in zeros</span></h2>
+    <p>Each state has a geometry: the s states are spheres, the p states lobed, the d states cloverleaves, and the shape is the probability density itself, drawn in space. But the more telling feature is what each shape excludes. Every orbital above the lowest carries nodes — surfaces where the density is exactly zero, regions the electron is never found in, written into the structure rather than left empty by chance. A node is not missing data; it is a forbidden place, part of the form. So the surface is not only shaped, it is shaped <em>with gaps</em> — and the zeros are as much the structure as the lobes. A reader who maps only where the density is bright will miss half the form, because the dark surfaces are load-bearing too.</p>
+    <div class="formal">
+      <span class="eq">shape = |ψ|²  ·  nodes: surfaces where |ψ|² = 0  ·  n−1 of them</span><br>
+      <span class="gl">orbitals have form and forbidden regions · the zeros are structural, not absence</span>
+    </div>
+    <div class="tags">
+      <span class="tag lit">Literal — orbitals have characteristic shapes and nodal surfaces of zero density</span>
+      <span class="tag bri">Bridge — structural zeros in behaviour: things a mode never does, by design</span>
+    </div>
+  </div>
+</section>
+
+<section class="central" data-status="lit bri">
+  <div class="wrap">
+    <p class="snum">§3 · central result</p><h2>Exclusion builds the structure<span class="kicker">why there is anything to read</span></h2>
+    <p>Here is the reason the cloud has layers at all, and it is the deepest result in the sector. No two electrons may occupy the same state — the exclusion principle, absolute. Each orbital holds at most two, of opposite spin, and then it is full. So electrons cannot all sink into the lowest, most stable state; they are <em>forced</em> upward, filling level after level, and that forcing is what builds the shells, the periodic table, and every distinction in chemistry. Remove exclusion and the structure vanishes: every electron collapses into the ground state, the cloud becomes one featureless mode, and there is no chemistry, no element distinct from another, nothing to read. The richness of the surface is not a bonus on top of the parts. It is the direct consequence of distinct states being forbidden to coincide. Differentiation is not optional here. It is enforced, and the enforcement is the structure.</p>
+    <div class="formal">
+      <span class="eq">no two electrons share a state  ·  ≤ 2 per orbital  ·  forced to stack</span><br>
+      <span class="gl">exclusion → shells → the periodic table · remove it → collapse to one mode → nothing to read</span>
+    </div>
+    <div class="restated"><b>Without the metaphor</b>
+      The behavioural surface has rich, layered structure because distinct functional states cannot coincide — they are forced to occupy different regions, and that forced differentiation is what builds the multi-levelled organisation. Were states free to overlap, behaviour would collapse into one undifferentiated mode. Distinguishability is the precondition for there being structure to read.</div>
+    <div class="tags">
+      <span class="tag lit">Literal — the Pauli exclusion principle forces shell structure and the periodic table</span>
+      <span class="tag bri">Bridge — behavioural structure as forced differentiation; collapse without it</span>
+    </div>
+    <p class="test"><b>Test ·</b> ask whether a system's modes are forced apart or free to coincide. If distinct behaviours must occupy distinct states, structure stacks and can be enumerated; if they may collapse together, expect one undifferentiated mode and little to map.</p>
+  </div>
+</section>
+
+<div class="wrap">
+  <div class="fig" aria-label="Without exclusion all electrons pile into the ground state with no structure; with exclusion they are forced to stack into shells, building structure">
+    <svg viewBox="0 0 760 210" role="img" aria-label="Left, a single pile of electrons in the lowest level labelled collapse; right, electrons forced to fill rising levels two at a time labelled structure">
+      <!-- WITHOUT exclusion: collapse -->
+      <line class="axisline" x1="60" y1="175" x2="300" y2="175"/>
+      <line class="levelline" x1="90" y1="160" x2="270" y2="160"/>
+      <ellipse class="pile" cx="180" cy="150" rx="70" ry="20"/>
+      <text class="flab-r" x="180" y="153" text-anchor="middle">all in the ground state</text>
+      <text class="flab" x="180" y="42" text-anchor="middle">without exclusion</text>
+      <text class="flab-r" x="180" y="198" text-anchor="middle">collapse · one mode · nothing to read</text>
+      <!-- divider -->
+      <line class="divider" x1="380" y1="30" x2="380" y2="195"/>
+      <!-- WITH exclusion: structure -->
+      <line class="axisline" x1="460" y1="175" x2="700" y2="175"/>
+      <line class="levelline" x1="500" y1="160" x2="660" y2="160"/>
+      <ellipse class="stack" cx="580" cy="156" rx="34" ry="9"/>
+      <line class="levelline" x1="500" y1="124" x2="660" y2="124"/>
+      <ellipse class="stack" cx="540" cy="120" rx="22" ry="8"/><ellipse class="stack" cx="600" cy="120" rx="22" ry="8"/>
+      <line class="levelline" x1="500" y1="88" x2="660" y2="88"/>
+      <ellipse class="stack" cx="540" cy="84" rx="22" ry="8"/><ellipse class="stack" cx="620" cy="84" rx="22" ry="8"/>
+      <line class="levelline" x1="500" y1="56" x2="660" y2="56"/>
+      <ellipse class="stack" cx="580" cy="52" rx="22" ry="8"/>
+      <text class="flab" x="580" y="42" text-anchor="middle">with exclusion</text>
+      <text class="flab-cl" x="580" y="198" text-anchor="middle">shells · structure · the periodic table</text>
+    </svg>
+    <p class="figcap">Fig. 1 — Why there is structure. Without exclusion, every electron sinks into the lowest state and the cloud is one featureless pile — no shells, no chemistry, nothing distinct to read. With exclusion, states cannot coincide, so electrons are forced up level by level, and that forcing alone builds the entire shell structure. The richness of the surface is enforced differentiation, not decoration.</p>
+  </div>
+</div>
+
+<section data-status="lit bri">
+  <div class="wrap">
+    <p class="snum">§4</p><h2>The filling makes the element<span class="kicker">configuration is identity-in-behaviour</span></h2>
+    <p>Given the states and the rule, the cloud builds itself by filling from the bottom up, one state at a time, in a fixed order. The result is the electron configuration — which shells and orbitals are occupied — and that configuration is what gives each element its chemistry, its place in the table, its way of meeting the world. Two atoms differ in behaviour not by their cores alone but by how their clouds are filled: the same filling rule, run to a different count, produces hydrogen or carbon or gold. So the surface is not arbitrary. It is the deterministic outcome of filling discrete states in order, and the configuration it reaches is the readable identity of how the thing behaves. Read the filling, and you have read the chemistry.</p>
+    <div class="tags">
+      <span class="tag lit">Literal — electron configuration follows from filling states in order and sets an element's chemistry</span>
+      <span class="tag bri">Bridge — the occupied-mode configuration as the readable identity of behaviour</span>
+    </div>
+  </div>
+</section>
+
+<section data-status="spec lit">
+  <div class="wrap">
+    <p class="snum">§5 · witness</p><h2>The seam<span class="kicker">where the structure is a lens</span></h2>
+    <p>Held to its limit: reading behaviour as a filled set of discrete orbital states is a bridge, and it strains where a model's surface is not literally quantised into shells, where there may be no exclusion principle forcing differentiation, and where "node" and "configuration" are metaphors rather than measured zeros and occupations. The literal core is textbook: orbitals are discrete states fixed by quantum numbers, they have characteristic shapes and nodal surfaces of exact zero, the Pauli principle forbids shared states and thereby forces shell structure, and the filling order produces the periodic table. The lens laid over them — that the behavioural surface is a set of discrete, shaped modes with structural zeros, built by forced differentiation, and readable as a configuration — is named as a lens. Its surviving claim is the one worth carrying into bonding: a surface has structure to read only because its parts are kept distinct, and what they exclude is as much the structure as what they show.</p>
+    <div class="tags">
+      <span class="tag spec">Speculative — behaviour as orbital states built by exclusion · the analogy, flagged</span>
+      <span class="tag lit">Literal — quantum numbers, orbital shapes, nodes, the Pauli principle, configuration</span>
+    </div>
+  </div>
+</section>
+
+<section class="closer">
+  <div class="wrap">
+    <p><span class="em">Corollary.</span> The haze resolved. Up close it is discrete states, each a shape of probability with zeros written into it, stacked into shells — and stacked only because no two may be the same. Take away that single prohibition and the whole structure falls into one undifferentiated mode and there is nothing left to read; keep it, and the forcing alone builds shells, elements, and every distinction chemistry has. So the surface a reader meets is structured the way it is for a reason that runs deeper than its parts: distinctness is mandatory, the gaps are load-bearing, and the configuration the filling reaches is the readable shape of how the thing behaves. Next the clouds touch — and what happens when two structured surfaces meet is where behaviour becomes chemistry.</p>
+    <div class="roadmap">
+      <div class="rm done"><p class="rk">Atomic · I</p><p>The electron cloud — the behavioural surface; vast, probabilistic, the only thing a probe touches.</p></div>
+      <div class="rm"><p class="rk">Atomic · III</p><p>Valence and bonding — how two clouds meet. The outermost shell, the bond, one surface interacting with another.</p></div>
+      <div class="rm"><p class="rk">Atomic · IV</p><p>The surface is all you touch — the closure, and the loop back to the photon that never reached the core.</p></div>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <div class="wrap">
+    <p><b>Status discipline.</b> Claims are tagged <b>literal</b> (the cloud is composed of discrete orbital states fixed by quantum numbers; orbitals have characteristic shapes and nodal surfaces of zero density; the Pauli principle forbids shared states and forces shell structure; electron configuration follows from ordered filling and sets chemistry), <b>bridge</b> (behaviour as discrete labelled modes, structural zeros as designed gaps, behavioural structure as forced differentiation, configuration as readable identity), or <b>speculative</b> (the surface-as-orbital-states-built-by-exclusion reading, flagged as a lens). The seam in §5 separates the textbook physics from the analogy laid over it.</p>
+    <p><b>What is being claimed.</b> Not that a model's behaviour is literally a set of atomic orbitals. That the behavioural surface has discrete, shaped structure with built-in zeros, organised along a few quantised axes; that this structure exists because distinct states are forbidden to coincide, so differentiation is forced rather than optional; and that the resulting configuration is the readable identity of how the thing behaves. Remove the forced distinctness and the surface collapses into one mode with nothing to read. The structure is enforced, the gaps are load-bearing, and the filling is the chemistry.</p>
+    <p class="mono" style="color:var(--ink-soft);font-size:11px;letter-spacing:.04em">ATOMIC PAPERS · II of IV · surface series · release · derive verdicts from measured results</p>
+  </div>
+</footer>
+
+<script>
+"use strict";
+(function(){
+  var on = {lit:true, bri:true, spec:true};
+  var chips = Array.prototype.slice.call(document.querySelectorAll(".schip"));
+  var sections = Array.prototype.slice.call(document.querySelectorAll("section[data-status]"));
+  function apply(){
+    sections.forEach(function(sec){
+      var tiers = (sec.getAttribute("data-status")||"").split(/\s+/).filter(Boolean);
+      var visible = tiers.some(function(t){ return on[t]; });
+      sec.classList.toggle("dim", !visible);
+    });
+  }
+  chips.forEach(function(c){
+    c.addEventListener("click", function(){
+      var s = c.getAttribute("data-s");
+      on[s] = !on[s];
+      c.setAttribute("aria-pressed", on[s] ? "true" : "false");
+      apply();
+    });
+  });
+  apply();
+})();
+</script>
+</body>
+</html>
